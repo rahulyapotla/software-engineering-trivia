@@ -51,6 +51,7 @@ src/
 ├── components/
 │   ├── Button.tsx
 │   ├── RadioGroup.tsx
+│   ├── ErrorToast.tsx
 │   ├── RadioGroupItem.tsx
 │   ├── Scoreboard.tsx
 │   ├── HeroTitle.tsx
