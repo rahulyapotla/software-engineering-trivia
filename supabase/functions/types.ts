@@ -1,6 +1,7 @@
 export interface Question {
   question: string;
   options: string[];
+  embedding?: any;
 }
 
 export interface StoredQuestion extends Question {

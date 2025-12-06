@@ -1,9 +1,10 @@
 import { getAnswerFromLLM } from "../llm.ts";
 import { saveAnswer, broadcastScore } from "../db.ts";
-import { cors, errorResponse, isValidAnswer, parseError } from "../helpers.ts";
+import { errorResponse, isValidAnswer, parseError } from "../helpers.ts";
 import {
   UserAnswerInput,
 } from "../types.ts";
+import { cors } from "../config.ts";
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });

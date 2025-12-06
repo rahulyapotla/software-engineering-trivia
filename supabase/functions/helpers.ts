@@ -1,15 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apiKey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
-
-export const supabase = createClient(
-  Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-);
+import { cors } from "./config.ts";
 
 const events = {
   NEW_QUESTION: "new_question",
@@ -85,7 +74,7 @@ async function runWithRetry<T>(fn: () => Promise<T>, retries = 2) {
 
 export function parseError(err: any) {
   const raw = err?.message || "internal_error: unexpected failure";
-  const [error, details] = raw.split(":").map((s) => s.trim());
+  const [error, details] = raw.split(":").map((s: string) => s.trim());
 
   // Default 500 unless logic below overrides it
   let status = 500;
@@ -117,7 +106,6 @@ function errorResponse(status: number, error: string, message: string) {
 }
 
 export {
-  cors,
   events,
   isValidJson,
   isValidQuestion,

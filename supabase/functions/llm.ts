@@ -1,13 +1,18 @@
 import OpenAI from "openai";
-import { SUBMIT_ANSWER_PROMPT, TRIVIA_QUESTION_PROMPT } from "./prompts.ts";
+import { SUBMIT_ANSWER_PROMPT } from "./prompts.ts";
 import { isValidJson, runWithRetry, timeout } from "./helpers.ts";
+import { CONFIG } from "./config.ts";
 
 const openai = new OpenAI({
   baseURL: "https://api.groq.com/openai/v1",
   apiKey: Deno.env.get("GROQ_API_KEY")!,
 });
 
-async function generateQuestion() {
+async function generateQuestion(prompt: string, retryCount: number = 0) {
+  if (retryCount >= CONFIG.MAX_RETRIES) {
+    throw new Error("Failed to generate unique question after retries");
+  }
+
   const completion = await runWithRetry(() =>
     timeout(
       openai.chat.completions.create({
@@ -17,7 +22,7 @@ async function generateQuestion() {
         messages: [
           {
             role: "user",
-            content: TRIVIA_QUESTION_PROMPT,
+            content: prompt,
           },
         ],
       }),

@@ -1,35 +1,48 @@
 export const TRIVIA_QUESTION_PROMPT = `
-  I'm building a trivia game. Create ONE new multiple-choice question.
-  Before you generate anything, read the list below:
+  Generate ONE unique multiple-choice trivia question about software engineering or computer science.
 
-  Do NOT create anything that overlaps in topic or wording with the past questions.
-
-  Return ONLY valid JSON in this structure:
+  Return ONLY valid JSON:
   {
     "question": "text",
     "options": ["opt1","opt2","opt3","opt4"],
     "correct_index": 0
   }
 
-  Question rules:
-  - Must be clear, factual, and unique compared to the past questions.
-  - Rotate across topics like algorithms, networking, DevOps, system design, databases, cloud, APIs, and security.
-
-  Option rules:
-  - 4–5 options.
+  Rules:
+  - The question must be factual and unambiguous.
+  - Avoid common repeated themes unless the angle is significantly different.
+  - Do NOT ask about the same concept already asked in previous questions (e.g., load balancers, caching, mutexes, HTTP, etc.).
+  - Keep options concise and mutually exclusive.
+  - Do NOT rephrase known questions.
   - No prefixes (no A), 1., *, -, etc).
-  - Options should be distinct and not all the same category unless appropriate.
-  - Only raw text in each option.
-  - One option must be correct.
-
-  Correct index:
-  - Zero-based index pointing to the correct option.
-
-  If you cannot produce JSON that meets all requirements, return:
-  {"error":"formatting"}
-
-  Return only the JSON.
+  - Options should be distinct and not all the same category unless appropriate
+  - Produce fresh, interesting, conceptually distinct content.
 `;
+
+export function buildRetryPrompt(
+  failureReason: string,
+  recentTopicHints: string[]
+) {
+  return `
+    The previous question was rejected because: ${failureReason}.
+
+    Also recently used topics that must be avoided for now:
+    ${recentTopicHints.map(t => `- ${t}`).join("\n")}
+
+    Generate a NEW trivia question about software engineering that:
+    - is NOT semantically similar to the previous question
+    - is NOT on any of the above recent topics
+    - is conceptually different
+    - follows the required JSON format STRICTLY
+
+    Return ONLY valid JSON in this format:
+    {
+      "question": "text",
+      "options": ["opt1","opt2","opt3","opt4"],
+      "correct_index": 0
+    }
+  `;
+}
 
 export const SUBMIT_ANSWER_PROMPT = `
   I’ll send you a question with a list of options.  
