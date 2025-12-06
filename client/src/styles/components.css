@@ -1,0 +1,62 @@
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center font-medium rounded-full
+           gap-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply flex bg-primary text-primary-foreground border border-primary hover:bg-white hover:text-primary;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground border border-primary hover:bg-secondary-foreground hover:text-secondary;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-base;
+  }
+
+  .btn-lg {
+    @apply px-5 py-3 text-lg;
+  }
+
+  .btn-icon-left {
+    @apply text-inherit;
+  }
+
+  .btn:hover .btn-icon-right,
+  .btn:hover .btn-icon-left {
+    @apply text-inherit;
+  }
+
+  .radio-icon {
+    @apply w-4 min-w-4 h-4 rounded-full border border-primary
+          flex items-center justify-center transition-all;
+  }
+
+  .radio-dot {
+    @apply w-2 h-2 rounded-full bg-primary;
+  }
+
+  .radio-btn {
+    @apply flex items-center gap-4 w-full py-2 px-[20px] rounded-xl
+          border border-gray-200 bg-white cursor-pointer
+          transition-all duration-200;
+  }
+
+  .radio-btn:hover {
+    @apply border-primary backdrop-blur-sm;
+  }
+
+  .radio-btn.selected {
+    @apply border-primary;
+  }
+
+  .radio-label {
+    @apply text-left;
+  }
+}
