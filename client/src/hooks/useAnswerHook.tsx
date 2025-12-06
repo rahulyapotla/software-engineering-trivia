@@ -6,7 +6,7 @@ export function useAnswer() {
   const submitAnswer = async (questionObj, selected, totalScore) => {
     setRequesting(true);
     try {
-      await supabase.functions.invoke(
+      const res = await supabase.functions.invoke(
         "submit-answer",
         {
           body: JSON.stringify({
@@ -18,6 +18,20 @@ export function useAnswer() {
           })
         }
       );
+      if (res.error) {
+        console.error("Function invocation failed:", res.error);
+        return false;
+      }
+
+      if (res.data && res.data.ok === false) {
+        console.error("Backend returned error:", res.data);
+        return false;
+      }
+
+      return true;
+    } catch(err) {
+      console.error("Failed to submit answer", err);
+      return false;
     } finally {
       setRequesting(false);
     }

@@ -9,7 +9,21 @@ export function useQuestionStream() {
   const requestNewQuestion = async () => {
     setRequesting(true);
     try {
-      await supabase.functions.invoke("generate-new-question");
+      const res = await supabase.functions.invoke("generate-new-question");
+      if (res.error) {
+        console.error("Function invocation failed:", res.error);
+        return false;
+      }
+
+      if (res.data && res.data.ok === false) {
+        console.error("Backend returned error:", res.data);
+        return false;
+      }
+
+      return { ok: true };    
+    } catch(e) {
+      console.error("Request failed:", e);
+      return false;
     } finally {
       setRequesting(false);
     }
