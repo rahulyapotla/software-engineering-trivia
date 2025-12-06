@@ -3,6 +3,7 @@ import HeroTitle from "src/components/HeroTitle";
 import { Button } from "src/components/Button";
 import Scoreboard from "src/components/Scoreboard";
 import { useScore } from "src/context/ScoreContext";
+import { ArrowRight } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Index = () => {
         <Button
           variant="primary"
           size="lg"
-          iconLeft={<i className="fa-solid fa-play"></i>}
+          iconRight={<ArrowRight className="w-5 h-5 ml-2" />}
           onClick={handleStartQuiz}
         >
           Start Quiz
