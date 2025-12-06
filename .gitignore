@@ -1,0 +1,6 @@
+.env
+.env.*
+supabase/.env
+client/node_modules
+client/.env
+node_modules
